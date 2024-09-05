@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript basics</title>
+</head>
+
+<body>
+    <h1>Javascript basics</h1>
+    <ul>
+        <li>Spring</li>
+        <li>Summer</li>
+        <li>Fall</li>
+        <li>Winter</li>
+    </ul>
+    <script>
+     //24
+     /*
+     const sortArray = (arr = undefined) => {
+      if (arr === undefined) return console.warn("You did not enter an array")
+
+      if (!(arr instanceof Array)) return console.error("The value is not an array")
+
+      if(arr.length === 0) console.log("The array is empty")
+
+      for (let num of arr) {
+        if(typeof num !== "number") return console.error(`The value ${num} is not a number`)
+      } 
+      
+      return console.info({
+        arr,
+        asc: arr.map(el => el).sort(),
+        desc: arr.map(el => el).sort().reverse()
+      });
+     }
+
+     sortArray();
+     sortArray("hi");
+     sortArray([]);
+     sortArray([3, {}]);
+     sortArray([7,87,8,6]);
+     */
+
+     //25
+     /*
+     const removeDuplicates = (arr = undefined) => {
+      if (arr === undefined) return console.warn("You did not enter an array")
+
+      if (!(arr instanceof Array)) return console.error("The value is not an array")
+
+      if(arr.length === 0) return console.error("The array is empty")
+
+      if(arr.length === 1) return console.error("The array must have at least 2 elements")
+
+      return console.info({
+        original: arr,
+        noDuplicates: arr.filter((value, index, self)=> self.indexOf(value) === index)
+      })
+
+      return console.info({
+        original: arr,
+        noDuplicates: [...new Set(arr)]
+      })
+      
+
+     }
+
+     removeDuplicates();
+     removeDuplicates({});
+     removeDuplicates([]);
+     removeDuplicates([2]);
+     removeDuplicates(["x", 10, "x", 2, "10", 10, true, true]);
+     */
+
+     //26
+     /*
+     const average = (arr = undefined) =>{
+      if (arr === undefined) return console.warn("You did not enter an array")
+
+      if (!(arr instanceof Array)) return console.error("The value is not an array")
+
+      if(arr.length === 0) return console.error("The array is empty")
+
+      for (let num of arr) {
+        if(typeof num !== "number") return console.error(`The value ${num} is not a number`)
+      } 
+
+      return console.info(
+        arr.reduce((total, num, index, arr) => {
+          total += num 
+          if(index === arr.length-1){
+            return arr.join(" + ") + " = " + (total/arr.length)
+          } else {
+            return total
+          }
+        })
+      )
+     }
+
+     average()
+     average({})
+     average([])
+     average([2,true])
+     average([1,2,3,4,5,6,7,8,9])
+     */
+
+     //27
+     class Movie{
+      constructor({id, title, director, premiere, country, genders, qualification}){
+        this.id = id;
+        this.title = title;
+        this.director = director;
+        this.premiere = premiere;
+        this.country = country;
+        this.genders = genders;
+        this.qualification = qualification;
+
+        this.validateIMDB(id)
+        this.validateTitle(title)
+        this.validateDirector(director)
+        this.validatePremiere(premiere)
+        this.validateCountry(country)
+        this.validateGenre(genders)
+        this.validateQualification(qualification)
+      }
+
+      static get genreList(){
+        return ["Action", "Adult", "Adventure", " Animation", "Biography", "Comedy", "Crime", "Documentary", "Drama", "Family", "Fantasy", "Film Noir", "Game-Show", "History", "Horror", "Musical", "Music", "Mystery", "News", "News", "Reality - TV", "Romance", "Sci-fi", "Short", "Sport", "Ttalk-Show", "Thriller", "War", "Western"];
+      }
+
+      static acceptedGenres(){
+        return console.info(Movie.genreList.join(", "))
+      }
+
+      validateArray(property, value){
+      if (!value) return console.warn(`${property} "${value}" is empty `)
+
+      if(!(value instanceof Array)) return console.error(`${property} "${value}" entered is not an array `)
+
+      if(value.length===0) return console.error(`${property} "${value}" has not data `)
+
+      for (let s of value) {
+        if(typeof s !== "string") return console.error(`${s} entered. is not a string `)
+      }
+
+      return true 
+     }
+
+
+      validateString(property, value){
+        if(!value) return console.warn(`${property} "${value}" is empty" `)
+        if(typeof value !== "string") return console.error(`${property} "${value}" entered is not a string"`)
+
+        return true
+      }
+
+      validateStringLength(property, value, length){
+        if (value.length > length) return console.error(`${property} "${value}" exceeds the length" ${length} `)
+
+        return true
+      }
+
+      validateNumber(property, value){
+        if(!value) return console.warn(`${property} "${value}" is empty `)
+
+        if(typeof value !== "number") return console.error(`${property} "${value}" entered is not a number `)
+
+        return true 
+      }
+
+      validateIMDB (id){
+        if(this.validateString("IMDB id", id))
+          if (!(/^([a-z]){2}([0-9]){7}$/.test(id)))
+            return console.error("The first two lowercase letters, the remaining seven numbers")
+      }
+
+      validateTitle (title){
+        if(this.validateString("Title", title))
+          this.validateStringLength("Title", title, 100)
+      }
+
+      validateDirector (director){
+        if(this.validateString("Director", director))
+          this.validateStringLength("Director", director, 50)
+      }
+
+      validatePremiere (premiere){
+        if(this.validateNumber("Release year", premiere))
+          if (!(/^([0-9]){4}$/.test(premiere)))
+            return console.error("It must be a 4 digit number")
+      }
+
+      validateCountry(country){
+        this.validateArray("Country", country)
+      }
+
+      validateGenre(genders){
+        if(this.validateArray("Genders", genders)){
+          for (let g of genders) {
+            console.log(g, Movie.genreList.includes(g))
+            if(!Movie.genreList.includes(g)){
+              console.error("Wrong gender")
+              Movie.acceptedGenres()
+            }
+          }
+        }
+      }
+
+      validateQualification (qualification){
+        if(this.validateNumber("Qualification", qualification))
+          return (qualification < 0 || qualification > 10)
+          ? console.error("The score must be in the range of 0 and 10")
+          : this.qualification= qualification.toFixed(1)
+      }
+
+      dataSheet(){
+        console.info(`Data Sheet \n Title ${this.title} \n Director ${this.director} \n Prmeier ${this.premiere} \n Country ${this.country} \ Gender ${this.genders.join(",") } \n Qualification ${this.qualification} \n IMDB Id ${this.id}`)
+      }
+
+
+     }
+     
+     //Movie.acceptedGenres()
+     const movie = new Movie({
+      id:"tt1234567",
+      title: "Movies title",
+      director: "Movies director",
+      premiere: 2020,
+      country: ["Mexico", "Francia"],
+      genders: ["Sport"],
+      qualification: 3.789
+     })
+
+     movie.dataSheet()
+
+    /*
+     const myMovies = [
+      {
+        id: "2334" 
+        title: "Time to eat"
+        director: "JOsh Grew"
+        etc...
+      },
+      {
+        ...
+      }
+     ]
+
+     myMovies.forEach(el => new Movie(el).dataSheet())
+
+     */ 
+    </script>
+</body>
+
+</html>
